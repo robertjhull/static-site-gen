@@ -1,0 +1,1 @@
+This is a static site generator that constructs a portfolio page from JSON data and EJS templates. *WIP*
