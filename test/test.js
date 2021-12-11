@@ -1,12 +1,13 @@
-const assert = require('assert');
-const { promisify } = require('util');
-const config = require('../site.config');
-const ejsRenderFile = promisify(require('ejs').renderFile);
 const fs = require('fs');
+const assert = require('assert');
+const config = require('./test.config')
 
-const expectedPage = fs.readFileSync('./test/demo.html')
+const { promisify } = require('util');
+const ejsRenderFile = promisify(require('ejs').renderFile);
 
-ejsRenderFile('./src/pages/demo.ejs', Object.assign({}, config))
+const expectedPage = fs.readFileSync('./test/test.page.html')
+
+ejsRenderFile('./test/test.page.ejs', Object.assign({}, config))
     .then((pageContents) => {
         return ejsRenderFile(`./src/layout.ejs`, Object.assign({}, config, { body: pageContents }))
     })
