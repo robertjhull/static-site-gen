@@ -4,7 +4,8 @@ const config = require('../site.config');
 
 const { promisify } = require('util');
 const ejsRenderFile = promisify(require('ejs').renderFile);
-const glob          = promisify(require('glob'));
+const glob = promisify(require('glob'));
+const { getCurrentDateTimeStr } = require('./helpers');
 
 const SRC_PATH    = './src';
 const PUBLIC_PATH = './public';
@@ -18,6 +19,8 @@ console.log("Copied over assets folder from ./src");
 // searches dir for .ejs files and assembles to html
 glob('**/*.ejs', { cwd: `${SRC_PATH}/pages` })
     .then((files) => {
+        const currentDateTime = getCurrentDateTimeStr();
+        console.log(`Started new build on ${currentDateTime}.`)
         files.forEach(file => {
             const fileData = path.parse(file);
             const destPath = path.join(PUBLIC_PATH, fileData.dir);
@@ -28,7 +31,8 @@ glob('**/*.ejs', { cwd: `${SRC_PATH}/pages` })
                     return ejsRenderFile(`${SRC_PATH}/pages/${file}`, Object.assign({}, config));
                 })
                 .then((pageContents) => {
-                    return ejsRenderFile(`${SRC_PATH}/layout.ejs`, Object.assign({}, config, { body: pageContents }));
+                    return ejsRenderFile(`${SRC_PATH}/layout.ejs`,
+                        Object.assign({}, config, { body: pageContents, dateTime: currentDateTime }));
                 })
                 .then((layoutContents) => {
                     return fse.writeFile(`${PUBLIC_PATH}/${fileData.name}.html`, layoutContents);
