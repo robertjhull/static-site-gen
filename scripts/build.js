@@ -6,12 +6,14 @@ const { promisify } = require('util');
 const ejsRenderFile = promisify(require('ejs').renderFile);
 const glob          = promisify(require('glob'));
 
-const SRC_PATH    = '../src';
-const PUBLIC_PATH = '../public';
+const SRC_PATH    = './src';
+const PUBLIC_PATH = './public';
 
 // delete old build in '../public' and copy assets from '../src'
 fse.emptyDirSync(PUBLIC_PATH);
+console.log("Emptied ./public folder");
 fse.copy(`${SRC_PATH}/assets`, `${PUBLIC_PATH}/assets`);
+console.log("Copied over assets folder from ./src");
 
 // searches dir for .ejs files and assembles to html
 glob('**/*.ejs', { cwd: `${SRC_PATH}/pages` })
@@ -19,8 +21,9 @@ glob('**/*.ejs', { cwd: `${SRC_PATH}/pages` })
         files.forEach(file => {
             const fileData = path.parse(file);
             const destPath = path.join(PUBLIC_PATH, fileData.dir);
-
-            fse.mkdir(destPath)
+            console.log(`Constructing ${fileData.name}.html...`);
+            
+            fse.ensureDir(destPath)
                 .then(() => {
                     return ejsRenderFile(`${SRC_PATH}/pages/${file}`, Object.assign({}, config));
                 })
@@ -32,5 +35,6 @@ glob('**/*.ejs', { cwd: `${SRC_PATH}/pages` })
                 })
                 .catch((err) => console.log(err));
         });
+        console.log("Finished.")
     })
     .catch((err) => console.log(err));

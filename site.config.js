@@ -1,11 +1,10 @@
 const projects = require('./src/data/projects');
 
-const Configuration = {
+module.exports = {
     site: {
-        title: '',
+        title: 'Portfolio',
         description: '',
+        updatedAt: '12/10/21 5:00PM PST',
         projects
     }
 }
-
-export default Configuration;
