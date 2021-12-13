@@ -1,47 +1,37 @@
 require('dotenv-safe').config();
 
 const fse = require('fs-extra');
-const path   = require('path');
+const path = require('path');
 const config = require('../site.config');
 const { promisify } = require('util');
+const { getCurrentDateTimeStr } = require('./helpers');
 const ejsRenderFile = promisify(require('ejs').renderFile);
 const glob = promisify(require('glob'));
-const { getCurrentDateTimeStr } = require('./helpers');
 
-// delete old build in '../public' and copy assets from '../src'
-const { sourceDir, destDir } = config.site;
+// delete old build and copy assets from /src
+const { sourceDir, destDir } = config;
 fse.emptyDirSync(destDir);
-console.log("Emptied ./public folder");
 fse.copy(`${sourceDir}/assets`, `${destDir}/assets`);
-console.log("Copied over assets folder from ./src");
 
-const contactInfo = {
-    name: process.env.NAME,
-    email: process.env.EMAIL,
-    github: process.env.GITHUB,
-    linkedin: process.env.LINKEDIN
-};
-
-// searches dir for .ejs files and assembles to html
+// searches /pages for .ejs files and assembles to .html
 glob('**/*.ejs', { cwd: `${sourceDir}/pages` })
     .then((files) => {
         const currentDateTime = getCurrentDateTimeStr();
-        console.log("Started new build on %s.", currentDateTime)
+
         files.forEach(file => {
-            const fileData = path.parse(file);
-            const destPath = path.join(destDir, fileData.dir);
-            console.log("Constructing %s.html...", fileData.name);
+            const fileName = path.parse(file).name;
+            console.log("Building %s.html...", fileName);
             
-            fse.ensureDir(destPath)
+            fse.ensureDir(destDir)
                 .then(() => {
-                    return ejsRenderFile(`${sourceDir}/pages/${file}`, config, contactInfo);
+                    return ejsRenderFile(`${sourceDir}/pages/${file}`, config);
                 })
                 .then((pageContents) => {
                     return ejsRenderFile(`${sourceDir}/layout.ejs`,
-                        Object.assign({}, config, { body: pageContents, dateTime: currentDateTime }));
+                        Object.assign({}, config, { pageContents, currentDateTime }));
                 })
                 .then((layoutContents) => {
-                    return fse.writeFile(`${destDir}/${fileData.name}.html`, layoutContents);
+                    return fse.writeFile(`${destDir}/${fileName}.html`, layoutContents);
                 })
                 .catch((err) => console.log(err));
         });
