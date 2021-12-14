@@ -5,6 +5,8 @@ module.exports = {
     description: '',
     sourceDir: './src',
     destDir: './public',
+    name: process.env.NAME,
+    summary: process.env.SUMMARY,
     email: process.env.EMAIL,
     github: process.env.GITHUB,
     linkedin: process.env.LINKEDIN,
