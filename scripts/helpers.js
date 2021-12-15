@@ -1,4 +1,4 @@
-const RRSSB = require('../src/rrssb/rrssb');
+const RRSSB = require('../src/data/rrssb');
 
 const getCurrentDateTimeStr = () => {
     const today = new Date();
