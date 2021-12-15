@@ -4,7 +4,7 @@ const fse = require('fs-extra');
 const path = require('path');
 const config = require('../site.config');
 const { promisify } = require('util');
-const { getCurrentDateTimeStr } = require('./helpers');
+const { getCurrentDateTimeStr, getRRSSButtons } = require('./helpers');
 const ejsRenderFile = promisify(require('ejs').renderFile);
 const glob = promisify(require('glob'));
 
@@ -17,6 +17,7 @@ fse.copy(`${sourceDir}/assets`, `${destDir}/assets`);
 glob('**/*.ejs', { cwd: `${sourceDir}/pages` })
     .then((files) => {
         const currentDateTime = getCurrentDateTimeStr();
+        const rrssButtons = getRRSSButtons(config.contactMethods);
 
         files.forEach(file => {
             const fileName = path.parse(file).name;
@@ -24,7 +25,8 @@ glob('**/*.ejs', { cwd: `${sourceDir}/pages` })
             
             fse.ensureDir(destDir)
                 .then(() => {
-                    return ejsRenderFile(`${sourceDir}/pages/${file}`, config);
+                    return ejsRenderFile(`${sourceDir}/pages/${file}`,
+                        Object.assign({}, config, { rrssButtons }));
                 })
                 .then((pageContents) => {
                     return ejsRenderFile(`${sourceDir}/layout.ejs`,
