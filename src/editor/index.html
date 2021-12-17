@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <title>Static Site Editor</title>
+        <meta name="description" content="Description"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#16537e">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../assets/css/normalize.css">
+        <link rel="stylesheet" type="text/css" href="../assets/css/skeleton.css">
+        <link rel="stylesheet" type="text/css" href="../assets/css/rrssb.css">
+        <link rel="stylesheet" type="text/css" href="../assets/css/styles.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <style>
+            #main {
+                height: 100vh;
+            }
+            .pane {
+                height: 100%;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .darker {
+                background-color:#00000030;
+            }
+            #editor {
+                width: 90%;
+            }
+            #preview-window {
+                font-size: 50%;
+                height: 90%;
+                width: 90%;
+                border: 1px solid black;
+                overflow-y: scroll;
+                background-color: #fafafa;
+            }
+            #preview-window h3 { font-size: 1.5rem; }
+            #preview-window h4 { font-size: 1.2rem; }
+            #preview-window h5 { font-size: 0.9rem; }
+            #preview-window h6 { font-size: .75rem; }
+            #preview-window input { font-size: 50%; }
+            #preview-placeholder {
+                height: 100%;
+                font-size: 1.5rem;
+                justify-content: center;
+                display:flex;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main" class="row">
+            <div class="six columns pane">
+                <form id="editor">
+                    <div class="row">
+                        <div class="six columns">
+                            <label for="nameInput">Name</label>
+                            <input class="u-full-width" type="text" placeholder="John Smith" id="nameInput">
+                        </div>
+                        <div class="six columns">
+                            <label for="workInput">Occupation</label>
+                            <input class="u-full-width" type="text" placeholder="Software Developer" id="workInput">
+                        </div>
+                        <label for="locationInput">Location</label>
+                        <input class="u-full-width" type="text" placeholder="City" id="locationInput">
+                        <label for="summaryInput">Summary</label>
+                        <textarea class="u-full-width" placeholder="Your summary here" id="summaryInput"></textarea>
+                        <label for="emailInput">Skills</label>
+                        <textarea class="u-full-width" placeholder="Your skills here" id="summaryInput"></textarea>
+                        <label for="projectsInput">Projects</label>
+                        <textarea class="u-full-width" placeholder="Your projects here" id="projectsInput"></textarea>
+                        <div class="row">
+                            <div class="six columns">
+                                <button id="preview-btn" class="button-primary">Preview</button>
+                            </div>
+                            <div class="six columns">
+                                <input id="build-btn" class="button-primary" type="submit" value="Build">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="six columns pane darker">
+                <div id="preview-window">
+                    <div id="preview-placeholder">
+                        <p><em>Click "preview" to generate preview page.</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                console.log("loaded");
+
+                function refresh() {
+                    $.ajax('http://localhost:3000/preview', {
+                        type: "GET",
+                        dataType : "html",
+                        contentType: "application/json; charset=utf-8",
+                        success: function(data) {
+                            $('#preview-window').html(data);
+                        }
+                    });
+                }
+
+                function build(e) {
+                    e.preventDefault();
+                    $.ajax('http://localhost:3000/build', {
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function() {
+                            console.log('success!');
+                        }
+                    });
+                }
+                $('#build-btn').click(build);
+
+                function preview(e) { 
+                    e.preventDefault();
+                    $('#preview-window').empty();
+                    refresh(); 
+                }
+                $('#preview-btn').click(preview);
+            })
+        </script>
+    </body>
+</html>

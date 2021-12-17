@@ -4,9 +4,11 @@ module.exports = {
     title: `${process.env.NAME} | Portfolio`,
     description: '',
     sourceDir: './src',
-    destDir: './public',
+    destDir: './preview',
+    layout: 'preview',
     name: process.env.NAME,
     occupation: process.env.OCCUPATION,
+    location: process.env.LOCATION,
     summary: process.env.SUMMARY,
     contactMethods: {
         email: process.env.EMAIL,
