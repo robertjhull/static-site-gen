@@ -1,4 +1,5 @@
 const RRSSB = require('../src/data/rrssb');
+const fse = require('fs-extra');
 
 const getCurrentDateTimeStr = () => {
     const today = new Date();
@@ -20,4 +21,9 @@ const getRRSSButtons = (contactMethods) => {
     return buttonHTML;
 }
 
-module.exports = { getCurrentDateTimeStr, getRRSSButtons };
+const prepareBuildDir = (dir) => {
+    fse.emptyDirSync(dir);
+    fse.copy(`./src/assets`, `${dir}/assets`);
+}
+
+module.exports = { getCurrentDateTimeStr, getRRSSButtons, prepareBuildDir };
