@@ -4,27 +4,28 @@ const app = express();
 const port = 3000;
 
 const build = require('./scripts/build');
-const config = require('./site.config');
 
-app.use(express.static(path.join(__dirname, 'src')));
+app.use('/', express.static(path.join(__dirname, 'src')));
+app.use('/preview', express.static(path.join(__dirname, 'preview')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/src/gui/index.html'));
 });
 
-app.get('/preview', (req, res) => {
-    build(Object.assign({}, config, { layout: 'preview', destDir: './preview' }))
+app.get('/preview/refresh', (req, res) => {
+    build({ preview: true })
         .then((success) => {
-            res.sendFile(path.join(__dirname, '/src/preview/index.html'))
+            res.send("Preview built!");
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err));
 });
 
 app.post('/build', (req, res) => {
-    build(config)
+    build()
         .then((success) => {
             res.send("Successfully built!");
         })
+        .catch((err) => console.log(err));
 })
 
 app.listen(port, () => {

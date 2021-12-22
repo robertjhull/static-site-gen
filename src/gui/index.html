@@ -37,14 +37,18 @@
                 height: 90%;
                 width: 90%;
                 border: 1px solid black;
-                overflow-y: scroll;
                 background-color: #fafafa;
             }
-            #preview-window h3 { font-size: 1.5rem; }
-            #preview-window h4 { font-size: 1.2rem; }
-            #preview-window h5 { font-size: 0.9rem; }
-            #preview-window h6 { font-size: .75rem; }
-            #preview-window input { font-size: 50%; }
+            #preview-iframe {
+                width:100%;
+                height:100%;
+                border-width:0;
+            }
+            #preview-load {
+                width: 50%;
+                margin: 0 auto;
+            }
+
             #preview-placeholder {
                 height: 100%;
                 font-size: 1.5rem;
@@ -52,11 +56,16 @@
                 display:flex;
                 align-items: center;
             }
+
+            canvas { 
+                max-width: 100% !important; 
+                max-height: 100% !important;
+            }
         </style>
     </head>
     <body>
         <div id="main" class="row">
-            <div class="six columns pane">
+            <div class="five columns pane">
                 <form id="editor">
                     <div class="row">
                         <div class="six columns">
@@ -86,25 +95,36 @@
                     </div>
                 </form>
             </div>
-            <div class="six columns pane darker">
+            <div class="seven columns pane darker">
                 <div id="preview-window">
-                    <div id="preview-placeholder">
+                    <!-- <div id="preview-placeholder">
                         <p><em>Click "preview" to generate preview page.</em></p>
-                    </div>
+                    </div> -->
+                    <iframe id="preview-iframe" src="" title="Preview Window"></iframe>
                 </div>
             </div>
+        </div>
+        <div id="preview-load">
         </div>
         <script>
             $(document).ready(function() {
                 console.log("loaded");
 
-                function refresh() {
-                    $.ajax('http://localhost:3000/preview', {
+                function htmlToElement(html) {
+                    var template = document.createElement('template');
+                    html = html.trim(); // Never return a text node of whitespace as the result
+                    template.innerHTML = html;
+                    return template.content.firstChild;
+                }
+
+                function preview(e) {
+                    e.preventDefault();
+                    $.ajax('http://localhost:3000/preview/refresh', {
                         type: "GET",
                         dataType : "html",
                         contentType: "application/json; charset=utf-8",
                         success: function(data) {
-                            $('#preview-window').html(data);
+                            $('#preview-iframe').attr('src', '/preview/index.html');
                         }
                     });
                 }
@@ -114,18 +134,12 @@
                     $.ajax('http://localhost:3000/build', {
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
-                        success: function() {
-                            console.log('success!');
+                        success: function(data) {
+                            console.log(data);
                         }
                     });
                 }
                 $('#build-btn').click(build);
-
-                function preview(e) { 
-                    e.preventDefault();
-                    $('#preview-window').empty();
-                    refresh(); 
-                }
                 $('#preview-btn').click(preview);
             })
         </script>

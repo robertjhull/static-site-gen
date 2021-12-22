@@ -7,6 +7,7 @@ module.exports = {
         publicDir: path.join(__dirname, './public'),
         previewDir: path.join(__dirname, './preview'),
         preview: false,
+        layout: 'default',
         title: `${process.env.NAME} | Portfolio`,
         description: '',
         name: process.env.NAME,
