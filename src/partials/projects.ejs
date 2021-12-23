@@ -1,11 +1,11 @@
 <!-- List of personal projects -->
 
 <div class="section">
-    <h4><u>Projects:</u></h4>
+    <h5>Projects:</h5>
+    <br>
     <% projects.forEach((project) => { %>
         <div class="project-box">
-            <h5><%= project.name %></h5>
-            <a href="<%= project.repo %>">GitHub repo >></a>
+            <h6><a href="<%= project.repo %>"><%= project.name %></a></h6>
             <p><%= project.desc %></p>
             <p><strong>Tools: </strong><%= project.tools.join(" • ") %></p>
         </div>
