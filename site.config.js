@@ -10,10 +10,12 @@ module.exports = {
         layout: 'default',
         title: `${process.env.NAME} | Portfolio`,
         description: '',
-        name: process.env.NAME,
-        occupation: process.env.OCCUPATION,
-        location: process.env.LOCATION,
-        summary: process.env.SUMMARY,
+        summary: {
+            name: process.env.NAME,
+            occupation: process.env.OCCUPATION,
+            location: process.env.LOCATION,
+            summary: process.env.SUMMARY,
+        },
         contactMethods: {
             email: process.env.EMAIL,
             github: process.env.GITHUB || null,

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <title>Static Site Editor</title>
+        <meta name="description" content="Description"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#16537e">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="../assets/css/normalize.css">
+        <link rel="stylesheet" type="text/css" href="../assets/css/skeleton.css">
+        <link rel="stylesheet" type="text/css" href="../assets/css/editor.styles.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <script src="../assets/js/editor.scripts.js"></script>
+        <script src="../assets/js/editor.form.js"></script>
+    </head>
+    <body>
+        <div id="editor-main" class="row">
+            <div class="five columns pane">
+                <form id="editor-form">
+                    <div class="row">
+                        <div id="tabs">
+                            <ul>
+                              <li><a href="#summary"><span>Summary</span></a></li>
+                              <li><a href="#projects"><span>Projects</span></a></li>
+                              <li><a href="#contactMethods"><span>Contact</span></a></li>
+                            </ul>
+                            <div id="summary"></div>
+                            <div id="projects"></div>
+                            <div id="contactMethods"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button id="preview-btn" class="button-primary u-pull-left">Save and Preview</button>
+                        <button id="build-btn" class="button-alt u-pull-right">Build</button>
+                    </div>
+                </form>
+            </div>
+            <div class="seven columns pane darker">
+                <p id="preview-text"><em>Click "preview" to generate preview page.</em></p>
+                <div id="preview-window">
+                    <iframe id="preview-iframe" src="" title="Preview Window"></iframe>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

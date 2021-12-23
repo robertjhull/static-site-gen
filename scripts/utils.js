@@ -1,5 +1,6 @@
 const RRSSB = require('../src/data/rrssb');
 const fse = require('fs-extra');
+const { config } = require('../site.config');
 
 const getCurrentDateTimeStr = () => {
     const today = new Date();
@@ -26,4 +27,9 @@ const prepareBuildDir = (src, target) => {
     fse.copy(`${src}/assets`, `${target}/assets`);
 }
 
-module.exports = { getCurrentDateTimeStr, getRRSSButtons, prepareBuildDir };
+const readUserFiles = () => {
+    const { summary, projects, contactMethods } = config;
+    return { summary, projects, contactMethods };
+}
+
+module.exports = { getCurrentDateTimeStr, getRRSSButtons, prepareBuildDir, readUserFiles};

@@ -3,12 +3,15 @@
 <div class="row section">
     <div class="four columns centered">
         <img id="profile-pic" src="./assets/img/profile.png">
-        <h3><%= name %></h3>
-        <h6><%= occupation %></h6>
-        <h6><%= location %></h6>
+        <h3><%= summary.name %></h3>
+        <h6><%= summary.occupation %></h6>
+        <h6><%= summary.location %></h6>
+        <br>
     </div>
     <div class="eight columns">
-        <p><%= summary %></p>
+        <p><%= summary.summary %></p>
+        <p><strong>Languages:</strong> JavaScript/TypeScript, Python, C++</p>
+        <p><strong>Technologies/Frameworks:</strong> React, React-Redux, Node, Express, MongoDB, Flask, .NET Core, PostgreSQL, MySQL, Git</p>
         <%- include('./buttons') %>
     </div>
 </div>
