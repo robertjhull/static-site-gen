@@ -4,7 +4,7 @@ const fse = require('fs-extra');
 const path = require('path');
 const { config } = require('../site.config');
 const { promisify } = require('util');
-const { getCurrentDateTimeStr, getRRSSButtons, prepareBuildDir } = require('./utils');
+const { getCurrentDateStr, getRRSSButtons, prepareBuildDir } = require('./utils');
 const ejsRenderFile = promisify(require('ejs').renderFile);
 const glob = promisify(require('glob'));
 
@@ -13,7 +13,7 @@ function build(options = {}) {
         
         const { srcDir, layout, preview, contactMethods } = Object.assign({}, config, options);
 
-        const currentDateTime = getCurrentDateTimeStr();
+        const currentDate = getCurrentDateStr();
         const rrssButtons = getRRSSButtons(contactMethods);
 
         const targetDir = preview ? config.previewDir : config.publicDir;
@@ -34,7 +34,7 @@ function build(options = {}) {
                         })
                         .then((pageContents) => {
                             return ejsRenderFile(`${srcDir}/layouts/${layout}.ejs`,
-                                Object.assign({}, config, { pageContents, currentDateTime }));
+                                Object.assign({}, config, { pageContents, currentDate }));
                         })
                         .then((page) => {
                             return fse.writeFile(`${targetDir}/${fileName}.html`, page);

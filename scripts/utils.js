@@ -1,15 +1,9 @@
 const RRSSB = require('../src/data/rrssb');
 const fse = require('fs-extra');
 
-const getCurrentDateTimeStr = () => {
+const getCurrentDateStr = () => {
     const today = new Date();
-    const date = `${today.getMonth() + 1}-${today.getDate()}-${today.getFullYear()}`;
-    const hours = today.getHours();
-    if (hours > 12) {
-        return `${date} ${hours - 12}:${today.getMinutes()}PM`;
-    } else {
-        return `${date} ${hours}:${today.getMinutes()}AM`;
-    }
+    return `${today.getMonth() + 1}-${today.getDate()}-${today.getFullYear()}`;
 }
 
 const getRRSSButtons = (contactMethods) => {
@@ -26,4 +20,4 @@ const prepareBuildDir = (src, target) => {
     fse.copy(`${src}/assets`, `${target}/assets`);
 }
 
-module.exports = { getCurrentDateTimeStr, getRRSSButtons, prepareBuildDir };
+module.exports = { getCurrentDateStr, getRRSSButtons, prepareBuildDir };
