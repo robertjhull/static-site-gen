@@ -1,10 +1,4 @@
 module.exports = {
-    test_site: {
-        title: 'Portfolio',
-        description: '',
-        basePath: '/static-site-gen',
-        updatedAt: '12/10/21 5:00PM PST',
-    },
     test_rrssb1: {
         linkedin: "linkedin-link",
         facebook: "facebook-link",
@@ -17,5 +11,21 @@ module.exports = {
     },
     test_rrssb3: {
         youtube: "youtube-link"
+    },
+
+    // mock state object for reducer tests
+    mockState: {
+        summary: {
+            name: "",
+            occupation: "",
+            location: "",
+            summary: "",
+        },
+        contactMethods: {
+            email: "",
+            github: "",
+            linkedin: "",
+        },
+        projects: []
     }
 }

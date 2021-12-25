@@ -1,6 +1,7 @@
 const { config } = require('../site.config');
 
-// handle user data state
+// ACTION TYPES
+
 const READ_USER_DATA = 'READ_USER_DATA';
 const UPDATE_SUMMARY = 'UPDATE_SUMMARY';
 const UPDATE_PROJECTS = 'UPDATE_PROJECTS';
@@ -12,30 +13,63 @@ const initialState = {
     contactMethods: {}
 }
 
-// ACTION { ...actionData, type: 'type of action' }
-// STATE 
+// REDUCER FUNCTIONS
 
 const readUserData = (state, action) => {
     const { summary, projects, contactMethods } = config;
-    state = {
+    return {
         summary: { ...summary },
-        projects: { ...projects },
+        projects: {}, //...projects },
         contactMethods: { ...contactMethods } 
     };
 }
+
+const updateUserSummary = (state, newSummary) => {
+    const { name, occupation, location, description } = newSummary;
+    return {
+        ...state,
+        summary: {
+            ...state.summary,
+            name,
+            occupation,
+            location,
+            description
+        }
+    }
+}
+
+const updateUserProjects = (state, newProjects) => {
+    return {
+        ...state,
+        projects: [ ...newProjects ]
+    }
+}
+
+const updateUserContactMethods = (state, action) => {
+    const { name, occupation, location, description } = action;
+    return {
+        ...state,
+        contactMethods: {
+           ...newContactMethods
+        }
+    }
+}
+
+// HANDLERS
+// expects (state: prevState, action: { ...actionData, type: 'type of action' })
 
 const handlers = {
     [READ_USER_DATA]: (state, action) => {
         return readUserData(state, action);
     },
     [UPDATE_SUMMARY]: (state, action) => {
-        return // something
+        return updateUserSummary(state, action.summary);
     },
     [UPDATE_PROJECTS]: (state, action) => {
-        return // something
+        return updateUserProjects(state, action.projects);
     },
     [UPDATE_CONTACT_METHOD]: (state, action) => {
-        return // something
+        return updateUserContactMethods(state, action.contactMethods);
     }
 }
 
