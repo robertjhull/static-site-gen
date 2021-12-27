@@ -1,5 +1,3 @@
-require('dotenv-safe').config();
-
 const fse = require('fs-extra');
 const path = require('path');
 const { config } = require('../site.config');
@@ -16,6 +14,7 @@ function build(options = {}) {
         const currentDate = getCurrentDateStr();
         const rrssButtons = getRRSSButtons(contactMethods);
 
+        // type: build || preview || test ?? is this even necessary?
         const targetDir = preview ? config.previewDir : config.publicDir;
 
         prepareBuildDir(srcDir, targetDir);
