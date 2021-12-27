@@ -1,0 +1,22 @@
+{
+    "summary": {
+        "name": "",
+        "occupation": "",
+        "location": "",
+        "summary": ""
+    },
+    "projects": [
+        {
+            "name": "",
+            "description": "",
+            "repo": "",
+            "deployed": "",
+            "tools" : []
+        }
+    ],
+    "contactMethods": {
+        "email": "",
+        "github": "",
+        "linkedin": ""
+    }
+}

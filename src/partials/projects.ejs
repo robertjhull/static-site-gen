@@ -6,7 +6,7 @@
     <% projects.forEach((project) => { %>
         <div class="project-box">
             <h6><a href="<%= project.repo %>"><%= project.name %></a></h6>
-            <p><%= project.desc %></p>
+            <p><%= project.description %></p>
             <p><strong>Tools: </strong><%= project.tools.join(" • ") %></p>
         </div>
     <% }) %>
