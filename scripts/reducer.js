@@ -1,11 +1,6 @@
-const { config } = require('../site.config');
-
-// ACTION TYPES
-
-const READ_USER_DATA = 'READ_USER_DATA';
-const UPDATE_SUMMARY = 'UPDATE_SUMMARY';
-const UPDATE_PROJECTS = 'UPDATE_PROJECTS';
-const UPDATE_CONTACT_METHOD = 'UPDATE_CONTACT_METHOD';
+const userData = require('../src/data/userData');
+const fse = require('fs-extra');
+const { srcDir } = require('../site.config').config;
 
 const initialState = {
     summary: {},
@@ -13,45 +8,38 @@ const initialState = {
     contactMethods: {}
 }
 
+// ACTION TYPES
+
+const READ_USER_DATA = 'READ_USER_DATA';
+const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
+const WRITE_USER_DATA = 'WRITE_USER_DATA';
+
+
 // REDUCER FUNCTIONS
 
-const readUserData = (state, action) => {
-    const { summary, projects, contactMethods } = config;
-    return {
-        summary: { ...summary },
-        projects: {}, //...projects },
-        contactMethods: { ...contactMethods } 
-    };
-}
+const readUserData = (state, action) => userData;
 
-const updateUserSummary = (state, newSummary) => {
-    const { name, occupation, location, description } = newSummary;
-    return {
-        ...state,
-        summary: {
-            ...state.summary,
-            name,
-            occupation,
-            location,
-            description
+const updateUserData = (state, newData) => {
+    let newState = { ...state };
+    for (const heading of Object.keys(newData)) {
+        if (heading === 'type') continue;
+        
+        else for (const [key, value] of Object.entries(newData[heading])) {
+            if (newState[heading].hasOwnProperty(key)) {
+                newState[heading][key] = value;
+            }
         }
     }
+    return newState;
 }
 
-const updateUserProjects = (state, newProjects) => {
-    return {
-        ...state,
-        projects: [ ...newProjects ]
-    }
-}
-
-const updateUserContactMethods = (state, action) => {
-    const { name, occupation, location, description } = action;
-    return {
-        ...state,
-        contactMethods: {
-           ...newContactMethods
-        }
+const writeUserData = (state, action) => {
+    const userData = state;
+    if (action.isTest) return userData;
+    else {
+        console.log("Writing to userData.json.")
+        fse.writeFile(srcDir + '/data/userData.json', JSON.stringify(userData))
+        return state;
     }
 }
 
@@ -62,14 +50,11 @@ const handlers = {
     [READ_USER_DATA]: (state, action) => {
         return readUserData(state, action);
     },
-    [UPDATE_SUMMARY]: (state, action) => {
-        return updateUserSummary(state, action.summary);
+    [UPDATE_USER_DATA]: (state, action) => {
+        return updateUserData(state, action);
     },
-    [UPDATE_PROJECTS]: (state, action) => {
-        return updateUserProjects(state, action.projects);
-    },
-    [UPDATE_CONTACT_METHOD]: (state, action) => {
-        return updateUserContactMethods(state, action.contactMethods);
+    [WRITE_USER_DATA]: (state, action) => {
+        return writeUserData(state, action);
     }
 }
 
@@ -92,14 +77,35 @@ const validateAction = action => {
 const createStore = (reducer) => {
     let state = undefined;
     return {
-      dispatch: (action) => {
-        validateAction(action)
-        state = reducer(state, action);
-      },
+        dispatch: (action) => {
+            console.log("ACTION::", action.type)
+            console.log("\nPREV STATE::\n", state);
+            validateAction(action);
+            state = reducer(state, action);
+            console.log("NEW STATE::\n", state);
+        },
       getState: () => state
     };
 };
   
 const store = createStore(reducer);
 
-module.exports = { store };
+const parseFormData = (formDataArray) => {
+    const state = store.getState();
+    const newData = {
+        summary: {},
+        projects: [],
+        contactMethods: {}
+    };
+    Object.values(formDataArray).forEach(({ name, value }) => {
+        if (value) {
+            const [section, key] = name.split('-');
+            if (state[section][key] !== value) {
+                newData[section][key] = value;
+            }
+        }
+    })
+    return newData;
+}
+
+module.exports = { store, parseFormData };

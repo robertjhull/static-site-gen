@@ -9,8 +9,13 @@ const getCurrentDateStr = () => {
 const getRRSSButtons = (contactMethods) => {
     let buttonHTML = '';
     for (const [platform, link] of Object.entries(contactMethods)) {
-        if (link && RRSSB[platform]) buttonHTML += RRSSB[platform](link);
-        else console.log('ERROR: Could not recognize social media.');
+        if (!link) continue;
+
+        else if (RRSSB[platform]) {
+            buttonHTML += RRSSB[platform](link);
+        }
+            
+        else throw new Error('Could not recognize social media.');
     }
     return buttonHTML;
 }

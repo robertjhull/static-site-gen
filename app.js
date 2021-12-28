@@ -4,8 +4,9 @@ const app = express();
 const port = 3000;
 
 const build = require('./scripts/build');
-const { readUserFiles } = require('./scripts/reducer');
+const { store, parseFormData } = require('./scripts/reducer');
 
+app.use(express.json());
 app.use('/', express.static(path.join(__dirname, 'src')));
 app.use('/preview', express.static(path.join(__dirname, 'preview')));
 
@@ -13,13 +14,16 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/src/editor/index.html'));
 });
 
-app.get('/read-user-files', (req, res) => {
-    const userData = readUserFiles();
-    res.send(userData);
+app.get('/read-user-data', (req, res) => {
+    store.dispatch({ type: 'READ_USER_DATA' });
+    res.send(store.getState());
 });
 
-app.post('/preview/update', (req, res) => {
-    build({ preview: true })
+app.post('/save-and-preview', function (req, res) {
+    const { summary, projects, contactMethods } = parseFormData(req.body);
+    store.dispatch({ type: 'UPDATE_USER_DATA', summary, projects, contactMethods });
+    store.dispatch({ type: 'WRITE_USER_DATA' });
+    build(store.getState(), { preview: true })
         .then((success) => {
             res.send("Preview built.");
         })
@@ -27,7 +31,7 @@ app.post('/preview/update', (req, res) => {
 });
 
 app.post('/build', (req, res) => {
-    build()
+    build(store.getState())
         .then((success) => {
             res.send("Successfully built.");
         })

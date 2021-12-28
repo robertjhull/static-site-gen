@@ -6,9 +6,10 @@ $(document).ready(function () {
 
     function preview(e) {
         e.preventDefault();
-        $.ajax('http://localhost:3000/preview/update', {
+        const formData = $('#editor-form').serializeArray()
+        $.ajax('http://localhost:3000/save-and-preview', {
             type: "POST",
-            dataType : "html",
+            data: JSON.stringify(formData),
             contentType: "application/json; charset=utf-8",
         })
             .done(function (res) {
