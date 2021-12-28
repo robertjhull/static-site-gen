@@ -1,0 +1,37 @@
+h1, h2, h3, h4, h5, h6 { margin: 0; }
+
+nav {
+    width: 95%;
+    margin: 2% 0 8% 0;
+    text-align: right;
+    padding-right: 5%;
+}
+
+.nav-link { padding: 5px 20px; }
+
+main { 
+    margin: 0 auto;
+    max-width: 700px;
+}
+
+.section { margin: 4rem 2rem; }
+
+.centered { text-align: center; }
+
+#profile-pic {
+    background-color: #0000007d;
+    border: 1px solid #0000007d;
+    border-radius: 100%;
+    width: 75%;
+}
+
+#message-form {
+    margin: 0 auto;
+    width: 80%;
+}
+
+#messageInput {
+    height: 150px;
+}
+
+footer { text-align: center; }
