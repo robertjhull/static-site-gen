@@ -13,7 +13,7 @@ $(document).ready(function () {
             contentType: "application/json; charset=utf-8",
         })
             .done(function (res) {
-                $('#preview-iframe').attr('src', '/preview/index.html');
+                $('#preview-iframe').attr('src', '/preview');
                 statusMessage(res, SUCCESS);
             })
             .fail(function (res) { statusMessage(res, ERROR); })

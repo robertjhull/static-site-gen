@@ -8,10 +8,13 @@ const { store, parseFormData } = require('./scripts/reducer');
 
 app.use(express.json());
 app.use('/', express.static(path.join(__dirname, 'src')));
-app.use('/preview', express.static(path.join(__dirname, 'preview')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/src/editor/index.html'));
+});
+
+app.get('/preview', (req, res) => {
+    res.sendFile(path.join(__dirname, '/src/editor/preview/index.html'));
 });
 
 app.get('/read-user-data', (req, res) => {
