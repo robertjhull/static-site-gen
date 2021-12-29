@@ -7,7 +7,7 @@ $(document).ready(function () {
     function preview(e) {
         e.preventDefault();
         const formData = $('#editor-form').serializeArray()
-        $.ajax('http://localhost:3000/save-and-preview', {
+        $.ajax('http://localhost:3000/preview-changes', {
             type: "POST",
             data: JSON.stringify(formData),
             contentType: "application/json; charset=utf-8",
@@ -22,7 +22,7 @@ $(document).ready(function () {
     function build(e) {
         e.preventDefault();
         $.ajax('http://localhost:3000/build', {
-            type: "POST",
+            type: "GET",
             contentType: "application/json; charset=utf-8",
         })
             .done(function (res) { statusMessage(res, SUCCESS); })
