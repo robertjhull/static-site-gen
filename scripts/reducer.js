@@ -132,16 +132,19 @@ const getStateChanges = (state, form) => {
     })
     return newData;
 }
+
+const log = (action, newState) => {
+    console.log('\x1b[33m%s%s\x1b[0m', "\nACTION::", action);
+    console.log('\x1b[33m%s%s\x1b[0m', "NEW STATE::\n", newState);
+}
   
 const createStore = (reducer) => {
     let state = undefined;
     return {
         dispatch: (action) => {
-            console.log("ACTION::", action.type)
-            console.log("\nPREV STATE::\n", state);
             validateAction(action);
             state = reducer(state, action);
-            console.log("NEW STATE::\n", state);
+            if (!action.silent) log(action.type, state);
         },
         getState: () => state,
         getChanges: (form) => getStateChanges(state, form)
