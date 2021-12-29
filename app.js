@@ -4,7 +4,7 @@ const app = express();
 const port = 3000;
 
 const build = require('./scripts/build');
-const { store, parseFormData } = require('./scripts/reducer');
+const { store } = require('./scripts/reducer');
 
 app.use(express.json());
 app.use('/', express.static(path.join(__dirname, 'src')));
@@ -22,10 +22,20 @@ app.get('/read-user-data', (req, res) => {
     res.send(store.getState());
 });
 
-app.post('/save-and-preview', function (req, res) {
-    const { summary, projects, contactMethods } = parseFormData(req.body);
+app.get('/add-project', (req, res) => {
+    store.dispatch({ type: 'ADD_PROJECT' });
+    res.send(store.getState());
+})
+
+
+app.get('/delete-project', (req, res) => {
+    store.dispatch({ type: 'DELETE_PROJECT' });
+    res.send(store.getState());
+})
+
+app.post('/preview-changes', function (req, res) {
+    const { summary, projects, contactMethods } = store.getChanges(req.body);
     store.dispatch({ type: 'UPDATE_USER_DATA', summary, projects, contactMethods });
-    store.dispatch({ type: 'WRITE_USER_DATA' });
     build(store.getState(), { preview: true })
         .then((success) => {
             res.send("Preview built.");
@@ -33,7 +43,8 @@ app.post('/save-and-preview', function (req, res) {
         .catch((err) => console.log(err));
 });
 
-app.post('/build', (req, res) => {
+app.get('/build', (req, res) => {
+    store.dispatch({ type: 'WRITE_USER_DATA' });
     build(store.getState())
         .then((success) => {
             res.send("Successfully built.");

@@ -1,4 +1,3 @@
-const userData = require('../src/data/userData');
 const fse = require('fs-extra');
 const { srcDir } = require('../site.config').config;
 
@@ -8,39 +7,69 @@ const initialState = {
     contactMethods: {}
 }
 
+const initialProject = {
+    name: "",
+    description: "",
+    deployed:"",
+    repo: "",
+    tools: ""
+}
+
 // ACTION TYPES
 
 const READ_USER_DATA = 'READ_USER_DATA';
 const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
 const WRITE_USER_DATA = 'WRITE_USER_DATA';
-
+const ADD_PROJECT = 'ADD_PROJECT';
+const DELETE_PROJECT = 'DELETE_PROJECT';
 
 // REDUCER FUNCTIONS
 
-const readUserData = (state, action) => userData;
+const readUserData = (state, action) => {
+    if (action.isTest) return initialState;
+    return JSON.parse(fse.readFileSync(srcDir + '/data/userData.json', 'utf-8'));
+}
+
+const addProject = (state) => {
+    return {
+        ...state,
+        projects: [
+            ...state.projects,
+            initialProject
+        ]
+    }
+}
+
+const deleteProject = (state) => {
+    return {
+        ...state,
+        projects: [
+            ...state.projects.slice(0, state.projects.length - 1)
+        ]
+    }
+}
 
 const updateUserData = (state, newData) => {
     let newState = { ...state };
     for (const heading of Object.keys(newData)) {
         if (heading === 'type') continue;
-        
-        else for (const [key, value] of Object.entries(newData[heading])) {
-            if (newState[heading].hasOwnProperty(key)) {
-                newState[heading][key] = value;
+
+        else if (heading === 'projects') {
+            for (let i = 0; i < newData[heading].length; i++) {
+                newState[heading][i] = Object.assign({}, newState[heading][i], newData[heading][i]);
             }
+        }
+        
+        else {
+            newState[heading] = Object.assign({}, newState[heading], newData[heading]);
         }
     }
     return newState;
 }
 
 const writeUserData = (state, action) => {
-    const userData = state;
-    if (action.isTest) return userData;
-    else {
-        console.log("Writing to userData.json.")
-        fse.writeFile(srcDir + '/data/userData.json', JSON.stringify(userData))
-        return state;
-    }
+    fse.writeFile(srcDir + '/data/userData.json', JSON.stringify(state));
+    return state;
 }
 
 // HANDLERS
@@ -55,6 +84,12 @@ const handlers = {
     },
     [WRITE_USER_DATA]: (state, action) => {
         return writeUserData(state, action);
+    },
+    [ADD_PROJECT]: (state, action) => {
+        return addProject(state);
+    },
+    [DELETE_PROJECT]: (state, action) => {
+        return deleteProject(state);
     }
 }
 
@@ -67,12 +102,36 @@ const reducer = (state = initialState, action) => {
 
 const validateAction = action => {
     if (!action || typeof action !== 'object' || Array.isArray(action)) {
-      throw new Error('Action must be an object!');
+        throw new Error('Action must be an object!');
     }
     if (typeof action.type === 'undefined') {
-      throw new Error('Action must have a type!');
+        throw new Error('Action must have a type!');
     }
-  };
+};
+  
+const getStateChanges = (state, form) => {
+    const newData = {
+        summary: {},
+        projects: [],
+        contactMethods: {}
+    };
+
+    // Checks if form data contains any values that are different from state
+    Object.values(form).forEach(({ name, value }) => {
+        const [section, key, idx] = name.split('-');
+
+        if (section === 'projects') {
+            if (state[section][idx][key] !== value) {
+                newData[section][idx] = { [key]: value }
+            }
+        }
+
+        else if (state[section][key] !== value) {
+            newData[section][key] = value;
+        }
+    })
+    return newData;
+}
   
 const createStore = (reducer) => {
     let state = undefined;
@@ -84,28 +143,11 @@ const createStore = (reducer) => {
             state = reducer(state, action);
             console.log("NEW STATE::\n", state);
         },
-      getState: () => state
+        getState: () => state,
+        getChanges: (form) => getStateChanges(state, form)
     };
 };
   
 const store = createStore(reducer);
 
-const parseFormData = (formDataArray) => {
-    const state = store.getState();
-    const newData = {
-        summary: {},
-        projects: [],
-        contactMethods: {}
-    };
-    Object.values(formDataArray).forEach(({ name, value }) => {
-        if (value) {
-            const [section, key] = name.split('-');
-            if (state[section][key] !== value) {
-                newData[section][key] = value;
-            }
-        }
-    })
-    return newData;
-}
-
-module.exports = { store, parseFormData };
+module.exports = { store };
