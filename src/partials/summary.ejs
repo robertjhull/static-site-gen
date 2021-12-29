@@ -10,8 +10,8 @@
     </div>
     <div class="eight columns">
         <p><%= summary.description %></p>
-        <p><strong>Languages:</strong> JavaScript/TypeScript, Python, C++</p>
-        <p><strong>Technologies/Frameworks:</strong> React, React-Redux, Node, Express, MongoDB, Flask, .NET Core, PostgreSQL, MySQL, Git</p>
+        <p><strong>Languages:</strong> <%= summary.languages.split(",").join(" • ") %></p>
+        <p><strong>Technologies/Frameworks:</strong> <%= summary.frameworks.split(",").join(" • ") %></p>
         <%- include('./buttons') %>
     </div>
 </div>
