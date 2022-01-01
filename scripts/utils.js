@@ -1,4 +1,4 @@
-const RRSSB = require('../src/data/rrssb');
+const RRSSB = require('./rrssb');
 const fse = require('fs-extra');
 
 const getCurrentDateStr = () => {
