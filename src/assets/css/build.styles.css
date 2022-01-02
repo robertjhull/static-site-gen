@@ -1,11 +1,6 @@
 h1, h2, h3, h4, h5, h6 { margin: 0; }
 
-nav {
-    width: 95%;
-    margin: 2% 0 8% 0;
-    text-align: right;
-    padding-right: 5%;
-}
+nav { margin: 3rem 2rem; }
 
 .nav-link { padding: 5px 20px; }
 
@@ -14,16 +9,28 @@ main {
     max-width: 675px;
 }
 
-.section { margin: 4rem 2rem; }
+.section { 
+    margin: 4rem 2rem;
+    min-height: 50vh;
+}
+
+.section > h4 { text-align: center; }
 
 .centered { text-align: center; }
+
+#summary-header { 
+    display: flex;
+    align-items: center;
+}
 
 #profile-pic {
     background-color: #0000007d;
     border: 1px solid #0000007d;
     border-radius: 100%;
-    width: 75%;
+    max-width: 90px;
 }
+
+.project-box h5 { font-size: 1.8rem; }
 
 #message-form {
     margin: 0 auto;

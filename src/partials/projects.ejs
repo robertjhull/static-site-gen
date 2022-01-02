@@ -1,15 +1,15 @@
 <!-- List of personal projects -->
 
-<div class="section">
-    <h5>Projects</h5>
+<div id="projects" class="section">
+    <h4>Projects</h4>
     <br>
     <% projects.forEach((project) => { %>
         <div class="project-box">
-            <h6><a href="<%= project.repo %>"><%= project.name %></a></h6>
+            <h5><a href="<%= project.repo %>"><%= project.name %></a></h5>
             <p><%= project.description %></p>
             <p>
                 <%if (project.tools.length > 0) { %>
-                    <strong>Tools: </strong>
+                    <strong>Tech Stack: </strong>
                 <% } %>
                 <%= project.tools.split(",").join(" • ") %>
             </p>
