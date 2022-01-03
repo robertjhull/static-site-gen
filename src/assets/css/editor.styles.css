@@ -16,12 +16,14 @@
 #tabs { 
     margin-bottom: 2rem; 
     background: transparent;
-    font-family: inherit;
 }
 #tabs > div { height: 615px; }
 #tabs > div label, #tabs > div > button { font-weight: 400; }
-#tabs > div input, button { font-family: inherit; }
-#tabs textarea { min-height: 150px; }
+#tabs > div input, button { font-family: 'Open Sans', serif; }
+#tabs textarea { 
+    min-height: 150px;
+    font-family: 'Open Sans', serif;;
+}
 #tabs > ul > li {
     display: inline;
     display: inline-block;
@@ -43,7 +45,7 @@
     font-size: 50%;
     height: 90%;
     width: 90%;
-    border: 1px solid black;
+    border: 1px solid #222;
     background-color: #fafafa;
 }
 #preview-iframe {
