@@ -23,3 +23,5 @@ npm run start
 ```
 
 This will start the express app and launch the editor window.
+
+![screenshot](https://user-images.githubusercontent.com/67487694/147901266-40be31e8-9c2f-43d7-bce2-2f443a0474eb.PNG)
