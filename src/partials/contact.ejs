@@ -3,17 +3,17 @@
 <div id="contact" class="section">
     <h4>Contact Me</h4>
     <br>
-    <form id="message-form">
+    <form id="message-form" action="https://formspree.io/f/xwkypnnv" method="POST">
         <div class="row">
             <div class="six columns">
                 <label for="nameInput">Your name</label>
-                <input class="u-full-width" type="text" placeholder="Full Name" id="nameInput">
+                <input class="u-full-width" type="text" placeholder="Full Name" id="nameInput" name="Name">
                 <label for="emailInput">Your email</label>
-                <input class="u-full-width" type="email" placeholder="name@mail.com" id="emailInput">
+                <input class="u-full-width" type="email" placeholder="name@mail.com" id="emailInput" name="Email">
             </div>
         </div>
         <label for="messageInput">Message</label>
-        <textarea class="u-full-width" placeholder="Hi Robert …" id="messageInput"></textarea>
+        <textarea class="u-full-width" placeholder="Hi Robert …" id="messageInput" name="Message"></textarea>
         <input class="button" type="submit" value="Submit">
     </form>
 </div>
