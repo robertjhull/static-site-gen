@@ -4,15 +4,24 @@
     <h4>Projects</h4>
     <br>
     <% projects.forEach((project) => { %>
-        <div class="project-box">
-            <h5><a href="<%= project.repo %>"><%= project.name %></a></h5>
-            <p><%= project.description %></p>
-            <p>
-                <%if (project.tools.length > 0) { %>
-                    <strong>Tech Stack: </strong>
-                <% } %>
-                <%= project.tools.split(",").join(" • ") %>
-            </p>
-        </div>
+        <a href="<%= project.repo %>">
+            <div class="project-box">
+                <h5><strong><%= project.name %></strong></h5>
+                <p>
+                    <%if (project.tools.length > 0) { %>
+                        <strong>Tech Stack: </strong>
+                    <% } %>
+                    <%= project.tools.split(",").join(" • ") %>
+                </p>
+                <div class="project-imgs">
+                    <%if (project.images.length > 0) { %>
+                        <% project.images.split(",").forEach((image) => { %> 
+                            <img src="<%= image %>">
+                        <% }) %>
+                    <% } %>
+                </div>
+                <p><%= project.description %></p>
+            </div>
+        </a>
     <% }) %>
 </div>
