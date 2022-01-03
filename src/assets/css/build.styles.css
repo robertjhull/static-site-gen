@@ -1,17 +1,25 @@
-html { scroll-behavior: smooth; }
+html { 
+    scroll-behavior: smooth;
+    text-align: justify;
+}
 
 h1, h2, h3, h4, h5, h6 { margin: 0; }
 
-nav {
+nav { width: 100%; top:0; position: fixed; z-index: 999;}
+nav ul { margin-bottom: 0; }
+nav ul li { display: inline-block; margin: 0 2rem; }
+
+#nav-links {
     display:flex;
-    justify-content: space-between;
     flex-wrap:wrap;
-    align-items: center;
-    margin: 3rem 4rem; 
+    justify-content: space-between;
+    background: #fafafa;
+    border-bottom: 1px solid #5553;
+    padding: 3rem 4rem;
 }
 
 main { 
-    margin: 10rem auto;
+    margin: 0 auto;
     max-width: 675px;
 }
 
@@ -19,7 +27,12 @@ a { text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 .section { 
-    margin: 4rem 2rem 6rem 2rem;
+    padding-top: 10vh;
+    min-height: 75vh;
+    margin: 0 2rem 6rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .section > h4 { text-align: center; }
