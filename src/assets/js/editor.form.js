@@ -16,7 +16,7 @@ $(document).ready(function () {
                 for: `${id}-${key}-input`
             }).appendTo(`#${element}`);
 
-            if (key === 'description' || key === 'images') {
+            if (key === 'description') {
                 $('<textarea/>', {
                     text: value,
                     name: `${element}-${key}-${idx}`,

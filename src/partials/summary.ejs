@@ -1,9 +1,29 @@
 <!-- Main bio and summary -->
 
 <div id="summary" class="row section">
-    <h4>About Me</h4>
+    <div id="summary-header" class="row">
+        <div class="five columns">
+            <img id="profile-pic" class="u-pull-right" src="./assets/img/profile.png">
+        </div>
+        <div class="seven columns">
+            <h4><%= summary.name %></h4>
+            <h6><%= summary.occupation %></h6>
+        </div>
+    </div>
     <br>
     <div class="row">
+        <!-- <div class="four columns centered">
+            <img id="profile-pic" src="./assets/img/profile.png">
+            <h4><%= summary.name %></h4>
+            <h6><%= summary.occupation %></h6>
+            <h6><%= summary.location %></h6>
+            <br>
+        </div>
+        <div class="eight columns">
+            <p><%= summary.description %></p>
+            <p><strong>Languages:</strong> <%= summary.languages.split(",").join(" • ") %></p>
+            <p><strong>Technologies/Frameworks:</strong> <%= summary.frameworks.split(",").join(" • ") %></p>
+        </div> -->
         <p><%= summary.description %></p>
         <p><strong>Languages:</strong> <%= summary.languages.split(",").join(" • ") %></p>
         <p><strong>Technologies/Frameworks:</strong> <%= summary.frameworks.split(",").join(" • ") %></p>
