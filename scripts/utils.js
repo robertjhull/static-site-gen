@@ -21,7 +21,7 @@ const getRRSSButtons = (contactMethods) => {
 }
 
 const prepareBuildDir = (src, target) => {
-    fse.emptyDirSync(target);
+    fse.emptyDirSync(`${target}/assets`);
     fse.copy(`${src}/assets`, `${target}/assets`);
 }
 
